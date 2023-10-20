@@ -18,3 +18,40 @@ export const searchUsers = async (text) => {
 
    return items
 }
+
+// Get single user
+export const getUser = async (login) => {
+   const response = await fetch(`${GITHUB_URL}/users/${login}`, {
+      headers: {
+         Authorization: `token ${GITGUB_TOKEN}`
+      }
+   })
+
+   if (response.status === 404) {
+      window.location = '/notfound'
+   } else {
+      /* this is what we need from response */
+      const data = await response.json()
+
+      return data
+   }
+}
+
+// Get user repos results
+export const getUserRepos = async (login) => {
+   const params = new URLSearchParams({
+      sort: 'created',
+      per_page: 10
+   })
+
+   const response = await fetch(`${GITHUB_URL}/users/${login}/repos?${params}`, {
+      headers: {
+         Authorization: `token ${GITGUB_TOKEN}`
+      }
+   })
+
+   /* this is what we need from response */
+   const data = await response.json()
+
+   return data
+}
