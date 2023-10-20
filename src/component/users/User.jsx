@@ -6,7 +6,7 @@ import { FaCodepen, FaStore, FaUserFriends, FaUsers } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import Spinner from '../layout/Spinner'
 import RepoList from '../repos/RepoList'
-import { getUser, getUserRepos } from '../../context/github/GithubActions'
+import { getUserAndRepos } from '../../context/github/GithubActions'
 
 const User = () => {
    const { dispatch, user, loading, repos } = useContext(GithubContext)
@@ -16,15 +16,12 @@ const User = () => {
    useEffect(() => {
       dispatch({ type: 'SET_LOADING' })
       const getUserData = async () => {
-         const userData = await getUser(params.login)
-         dispatch({ type: 'GET_USER', payload: userData })
-
-         const userRepoData = await getUserRepos(params.login)
-         dispatch({ type: 'GET_REPOS', payload: userRepoData })
+         const userData = await getUserAndRepos(params.login)
+         dispatch({ type: 'GET_USER_AND_REPOS', payload: userData })
       }
 
       getUserData()
-   }, [])
+   }, [dispatch, params.login])
 
    const { name, type, avatar_url, location, bio, blog, twitter_username, login, html_url, followers, following, public_repos, public_gists, hireable } = user
 
@@ -60,7 +57,7 @@ const User = () => {
                         </h1>
                         <p>{bio}</p>
                         <div className='mt-4 card-actions'>
-                           <a href={html_url} target='_blank' rel='noreferre' className='btn btn-outline'>
+                           <a href={html_url} target='_blank' rel='noreferrer' className='btn btn-outline'>
                               Visit Github Profile
                            </a>
                         </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useContext } from 'react'
 import AlertContext from '../../context/alert/AlertContext'
-import { FaBan } from 'react-icons/fa'
+// import { FaBan } from 'react-icons/fa'
 
 const Alert = () => {
    const { alert } = useContext(AlertContext)
